@@ -17,6 +17,9 @@ public class CartDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
+
+
+
     UserDAO userDAO = new UserDAO();
 
     public CartModel getCart(int id) {
