@@ -1,11 +1,18 @@
 package vn.iotstar.model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class CartModel {
 	private int cart_id;
 	private UserModel buyer;
-	private String buyDate;
+	private Timestamp buyDate;
+
+    public CartModel(int cart_id, UserModel buyer, Timestamp buyDate) {
+        this.cart_id = cart_id;
+        this.buyer = buyer;
+        this.buyDate = buyDate;
+    }
+
     public int getCart_id() {
         return cart_id;
     }
@@ -18,17 +25,15 @@ public class CartModel {
     public void setBuyer(UserModel buyer) {
         this.buyer = buyer;
     }
-    public String getBuyDate() {
+
+    public Timestamp getBuyDate() {
         return buyDate;
     }
-    public void setBuyDate(String buyDate) {
+
+    public void setBuyDate(Timestamp buyDate) {
         this.buyDate = buyDate;
     }
-    public CartModel(int cart_id, UserModel buyer, String buyDate) {
-        this.cart_id = cart_id;
-        this.buyer = buyer;
-        this.buyDate = buyDate;
-    }
+
     public CartModel() {
         
     }

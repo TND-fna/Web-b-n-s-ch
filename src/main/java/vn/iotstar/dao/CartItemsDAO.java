@@ -19,15 +19,22 @@ public class CartItemsDAO {
     UserDAO userDAO = new UserDAO();
     
     public void insert(CartItemsModel cartItem) {              
-        String query = "INSERT INTO CartItems(cart_id, pro_id, quantity, unitPrice) VALUES(?, ?, ?, ?)";
+        String query = "INSERT INTO CartItems() VALUES(?, ?, ?, ?, ?)";
         try {
             connection = new DBConnection().getConnection();
             ps = connection.prepareStatement(query);
-            //ps.setInt(1, cartItem.getId());
-            ps.setInt(1, cartItem.getCart().getCart_id());
-            ps.setInt(2, cartItem.getProduct().getId());
-            ps.setInt(3, cartItem.getQuantity());
-            ps.setDouble(4, cartItem.getUnitPrice());
+//            ps.setInt(1,cartItem.getId());
+//            ps.setInt(2, cartItem.getCart().getCart_id());
+//            ps.setInt(3, cartItem.getProduct().getId());
+//            ps.setInt(4, cartItem.getQuantity());
+//            ps.setDouble(5, cartItem.getUnitPrice());
+
+            ps.setInt(1,cartItem.getId());
+            ps.setInt(2,cartItem.getQuantity());
+            ps.setDouble(3,cartItem.getUnitPrice());
+            ps.setInt(4,cartItem.getProduct().getId());
+            ps.setInt(5,cartItem.getCart().getCart_id());
+
             ps.executeUpdate();                 
             
         } catch (Exception e) {
@@ -35,7 +42,7 @@ public class CartItemsDAO {
         }
     }
     public void edit(CartItemsModel cartItem) {
-        String query = "UPDATE CartItems SET quantity = ?, unitPrice = ? WHERE cart_id = ? AND pro_id = ?";
+        String query = "UPDATE CartItems SET quantity = ?, unitPrice = ? WHERE cart_id = ? AND product_id = ?";
         try {
             connection = new DBConnection().getConnection();
             ps = connection.prepareStatement(query);           
@@ -51,7 +58,7 @@ public class CartItemsDAO {
         }
     }
     public void delete(int id, int pro_id) {
-        String query = "DELETE FROM CartItems WHERE cart_id = ? AND pro_id = ?";
+        String query = "DELETE FROM CartItems WHERE cart_id = ? AND product_id = ?";
         try {
             connection = new DBConnection().getConnection();
             ps = connection.prepareStatement(query);           
@@ -65,39 +72,45 @@ public class CartItemsDAO {
     }
     public List<CartItemsModel> get(int id) {
     	List<CartItemsModel> list = new ArrayList<>();
-        String query = "SELECT CartItems.id, CartItems.cart_id, CartItems.pro_id, CartItems.quantity, unitPrice, CART.user_id, buy_date, productName, price, image "
-        		+ "FROM CartItems JOIN CART ON CartItems.cart_id = CART.cart_id JOIN PRODUCT ON CartItems.pro_id = PRODUCT.id "
-        		+ "WHERE CartItems.cart_id = ?";
+        String query = "SELECT CartItems.id, CartItems.cart_id, CartItems.product_id, CartItems.quantity, unitPrice, CART.users_id, buy_date, productName, price, image" +
+                " FROM CartItems JOIN CART ON CartItems.cart_id = CART.cart_id JOIN PRODUCT ON CartItems.product_id = PRODUCT.id" +
+                " WHERE CartItems.cart_id = ?";
         try {
             connection = new DBConnection().getConnection();
             ps = connection.prepareStatement(query);           
             ps.setInt(1, id);
-            rs = ps.executeQuery();   
-            
+            rs = ps.executeQuery();
             while(rs.next()) {
-                UserModel userModel = userDAO.getUserById(rs.getInt("user_id"));
-                CartModel cartModel = new CartModel();
-                cartModel.setBuyer(userModel);
-                cartModel.setBuyDate(rs.getString("buy_date"));
-                cartModel.setCart_id(rs.getInt("cart_id"));
-                
+                UserModel userModel = userDAO.getUserById(rs.getInt(6));
+                System.out.println(userModel);
                 ProductModel productModel = new ProductModel();
-                productModel.setId(rs.getInt("pro_id"));
-                productModel.setImage(rs.getString("image"));
-                productModel.setProductName(rs.getString("productName"));
-                productModel.setPrice(rs.getInt("price"));
-                
-                CartItemsModel cartItem = new CartItemsModel();
-                cartItem.setCart(cartModel);
-                cartItem.setProduct(productModel);
-                cartItem.setQuantity(rs.getInt("quantity"));
-                cartItem.setUnitPrice(rs.getDouble("unitPrice"));
-                list.add(cartItem);
+                productModel.setId(rs.getInt(3));
+                productModel.setProductName(rs.getString(8));
+                productModel.setImage(rs.getString(10));
+                productModel.setPrice(rs.getInt(9));
+
+                CartModel cartModel = new CartModel();
+                cartModel.setCart_id(rs.getInt(2));
+                cartModel.setBuyer(userModel);
+                cartModel.setBuyDate(rs.getTimestamp(7));
+
+                CartItemsModel cartItemsModel = new CartItemsModel();
+                cartItemsModel.setId(rs.getInt(1));
+                cartItemsModel.setQuantity(rs.getInt(4));
+                cartItemsModel.setUnitPrice(rs.getDouble(5));
+                cartItemsModel.setProduct(productModel);
+                cartItemsModel.setCart(cartModel);
+                list.add(cartItemsModel);
             }
             return list;
         } catch (Exception e) {
             // TODO: handle exception
-        }   
+        }
         return null;
+
+    }
+    public static void main(String[] args){
+        CartItemsDAO cart = new CartItemsDAO();
+        System.out.println(cart.get(0));
     }
 }

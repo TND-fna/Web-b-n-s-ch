@@ -26,8 +26,8 @@ public class SMSOTP {
 		int otp = Integer.parseInt(otpvalue);
 		
 		Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-		Message message = Message.creator(new com.twilio.type.PhoneNumber(phoneNumber),
-				new com.twilio.type.PhoneNumber("+17792091951"), "Your OTP: " + otp).create();
+		Message message = Message.creator(new PhoneNumber(phoneNumber),
+				new PhoneNumber("+17792091951"), "Your OTP: " + otp).create();
 
 		System.out.println(message.getSid() + "\n" + "Your OTP: " + otp);
 		return otp;

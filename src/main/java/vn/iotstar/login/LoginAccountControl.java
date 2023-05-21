@@ -57,25 +57,25 @@ public class LoginAccountControl extends HttpServlet {
             mySession.setAttribute("idUser", userModel.getUserID());
             mySession.setAttribute("name", userModel.getUsers_first_name() + " " + userModel.getUsers_last_name());
 
-//            CartDAO cartDAO = new CartDAO();
-//            CartModel cartModel = cartDAO.getCartByUserId(userModel.getUserID());
+            CartDAO cartDAO = new CartDAO();
+            CartModel cartModel = cartDAO.getCartByUserId(userModel.getUserID());
 
-//            if (cartModel == null) {
-//                cartModel = new CartModel();
-//                cartModel.setBuyer(userModel);
-//                cartDAO.insertCart(cartModel);
-//            }
-//
-//            CartItemsDAO cartItemsDAO = new CartItemsDAO();
-//            List<CartItemsModel> cartItemsModel = cartItemsDAO.get(cartModel.getCart_id());
-//
-//            if (object == null) {
-//                Map<Integer, CartItemsModel> map = new HashMap<Integer, CartItemsModel>();
-//                for (CartItemsModel items : cartItemsModel) {
-//                    map.put(items.getProduct().getId(), items);
-//                }
-//                mySession.setAttribute("cart", map);
-//            }
+            if (cartModel == null) {
+                cartModel = new CartModel();
+                cartModel.setBuyer(userModel);
+                cartDAO.insertCart(cartModel);
+            }
+
+            CartItemsDAO cartItemsDAO = new CartItemsDAO();
+            List<CartItemsModel> cartItemsModel = cartItemsDAO.get(cartModel.getCart_id());
+
+            if (object == null) {
+                Map<Integer, CartItemsModel> map = new HashMap<Integer, CartItemsModel>();
+                for (CartItemsModel items : cartItemsModel) {
+                    map.put(items.getProduct().getId(), items);
+                }
+                mySession.setAttribute("cart", map);
+            }
 //Nếu thông tin đăng nhập chính xác, hệ thống đưa người dùng đến trang chính
             resp.sendRedirect("home");
 

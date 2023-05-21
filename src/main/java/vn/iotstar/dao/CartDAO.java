@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import vn.iotstar.connection.DBConnection;
 import vn.iotstar.model.CartModel;
 import vn.iotstar.model.UserModel;
@@ -19,10 +20,9 @@ public class CartDAO {
     UserDAO userDAO = new UserDAO();
 
     public CartModel getCart(int id) {
-        String query = "SELECT cart_id, buy_date, users_email, users_username, [user_id] "
-                + "FROM CART JOIN USERS "
-                + "ON CART.user_id = USERS.users_id "
-                + "WHERE cart_id = ?";
+        String query = "select cart.cart_id, cart.buy_date, users.users_email, users.users_username , users.users_id"
+                + " FROM CART JOIN USERS ON CART.users_id = USERS.users_id"
+                + " WHERE cart_id = ?";
 
         try {
             connection = new DBConnection().getConnection();
@@ -31,12 +31,15 @@ public class CartDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                UserModel userModel = userDAO.getUserById(rs.getInt("user_id"));
-                CartModel cart = new CartModel();
-                cart.setCart_id(rs.getInt("cart_id"));
-                cart.setBuyer(userModel);
-                cart.setBuyDate(rs.getString("buy_date"));
-                return cart;
+                UserModel userModel = new UserModel();
+                userModel.setUsers_email(rs.getString(3));
+                userModel.setUsers_username(rs.getString(4));
+                userModel.setUsers_email(rs.getString(5));
+                CartModel cartModel = new CartModel();
+                cartModel.setCart_id(rs.getInt(1));
+                cartModel.setBuyer(userModel);
+                cartModel.setBuyDate(rs.getTimestamp(2));
+                return cartModel;
             }
 
         } catch (Exception e) {
@@ -56,16 +59,14 @@ public class CartDAO {
             ps.setInt(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
-                System.out.println("con cac");
                 UserModel userModel = userDAO.getUserById(id);
                 System.out.println(userModel);
                 CartModel cart = new CartModel();
                 cart.setCart_id(rs.getInt("cart_id"));
                 System.out.println(rs.getInt("cart_id"));
                 cart.setBuyer(userModel);
-                cart.setBuyDate(rs.getString("buy_date"));
+                cart.setBuyDate(rs.getTimestamp("buy_date"));
                 System.out.println(rs.getString("buy_date"));
-                System.out.println("close connect");
                 connection.close();
                 return cart;
             }
@@ -77,16 +78,15 @@ public class CartDAO {
     }
 
     public void insertCart(CartModel cart) {
-        String query = "INSERT INTO CART(user_id) VALUES(?)";
+        String query = "INSERT INTO CART() VALUES(?, ?, ?)";
 
         try {
             connection = new DBConnection().getConnection();
             ps = connection.prepareStatement(query);
-            //ps.setInt(1, cart.getCart_id());
-            ps.setInt(1, cart.getBuyer().getUserID());
-            //ps.setDate(3, new Date(cart.getBuyDate().getTime()));
+            ps.setInt(1, cart.getCart_id());
+            ps.setInt(2, cart.getBuyer().getUserID());
+            ps.setTimestamp(3, cart.getBuyDate());
             ps.executeUpdate();
-
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -124,6 +124,6 @@ public class CartDAO {
 
     public static void main(String[] args) {
         CartDAO cartDAO = new CartDAO();
-        System.out.println(cartDAO.getCartByUserId(1));
+        System.out.println(cartDAO.getCart(0));
     }
 }

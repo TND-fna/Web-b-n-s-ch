@@ -17,7 +17,7 @@ public class PdsDetailDAO {
 	ResultSet rs = null;
 
 	public CoverTypeModel getCoverType(String id) {
-	    String query = "SELECT C.id, [type_name], p.description, C.create_at, C.update_at "
+	    String query = "SELECT C.id, c.type_name, p.description, C.create_at, C.update_at "
 	            + "FROM PRODUCT P JOIN COVER_TYPE C ON P.id = C.id "
 	            + "WHERE P.id = ?";
 	    
@@ -67,10 +67,13 @@ public class PdsDetailDAO {
 	    return null;
 	}
 	public ProductModel getProductDetail(String psdID) {
-		String query = "SELECT p.id, productName, image, description, price, categoryID, discontinued, quantity, createAt, updateAt, per_discount, cover_id, storeID, id_NXB, DateXB, expiration, rating_count, average_rating "
-				+ "FROM   PRODUCT AS p INNER JOIN DISCOUNT AS d ON p.id_discount = d.id_discount "
-				+ "WHERE p.id = ?";
+//		String query = "SELECT p.id, productName, image, description, price, categoryID, discontinued, quantity, createAt, updateAt, per_discount, cover_id, storeID, id_NXB, DateXB, expiration, rating_count, average_rating "
+//				+ "FROM   PRODUCT AS p INNER JOIN DISCOUNT AS d ON p.id_discount = d.id_discount "
+//				+ "WHERE p.id = ?";
 
+		String query = "SELECT *" +
+				"FROM   PRODUCT" +
+				" WHERE ID = ?";
 		try {
 			conn = new DBConnection().getConnection();
 			ps = conn.prepareStatement(query);
@@ -83,17 +86,17 @@ public class PdsDetailDAO {
                         rs.getString(2), 
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getInt(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getDate(10),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11),
                         rs.getInt(12),
                         rs.getInt(13),
                         rs.getInt(14),
-                        rs.getDate(15),
+                        rs.getString(15),
                         rs.getInt(16),
                         rs.getDouble(17));
 			}
@@ -101,5 +104,9 @@ public class PdsDetailDAO {
 			// TODO: handle exception
 		}
 		return null;
+	}
+	public static void main(String[] args) {
+		PdsDetailDAO pds = new PdsDetailDAO();
+		System.out.println(pds.getProductDetail("1"));
 	}
 }
