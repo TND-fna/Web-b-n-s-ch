@@ -237,8 +237,12 @@
                         </div>
                     </div> -->
 					<!-- <hr class="mb-4"> -->
-					<div id="paymentMethod" class="btn btn-primary btn-lg btn-block btn-payment"
-						>Thanh toán</div>
+
+<%--					<div id="paymentMethod" class="btn btn-primary btn-lg btn-block btn-payment"--%>
+<%--						>Thanh toán</div>--%>
+					<div id="pay" class="btn btn-primary btn-lg btn-block btn-payment">
+						<a href="http://localhost:8080/WebBanHang_war/user#"> Thanh toán</a>
+					</div>
 				</form>
 			</div>
 		</div>

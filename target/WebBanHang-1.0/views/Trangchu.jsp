@@ -91,7 +91,7 @@
 				</div>
 				<form name="f" action="" method="get">
 					<div id="content-newbook" class="row">
-						<c:forEach items="${displayProduct}" var="pd">
+						<c:forEach items="${allProduct}" var="pd">
 							<div class="newbook col-2-4">
 								<div class="card">
 									<a href="PdsDetail?psdID=${pd.id}" class="card-item"> <img
@@ -201,7 +201,8 @@
 		function buy(id) {
 			var amount = 1;
 			$.ajax({
-				url : "/WebBanHang/member/cart-add",
+				// url : "/WebBanHang/member/cart-add",
+				url : "/WebBanHang/member/cart-add?",
 				type : "get", //send it through get method
 				data : {
 					pId : id,
