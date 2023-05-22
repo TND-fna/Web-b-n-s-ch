@@ -37,12 +37,16 @@ public class HomeController extends HttpServlet {
 		// Lay danh sach san pham
 		List<ProductModel> listTop10Products = productDAO.getTop10Products();
 		List<ProductModel> displayProduct = productDAO.getDisplayProducts();
-		System.out.println(displayProduct);
+		List<ProductModel> allProduct = productDAO.getAllProducts();
+
+		System.out.println(allProduct);
+//		System.out.println(displayProduct);
 		// Lay danh sach the loai
 		List<CategoryModel> listCategorys = categoryDAO.getAllCategory();
 		
 		req.setAttribute("listTop10Product", listTop10Products);
 		req.setAttribute("displayProduct", displayProduct);
+		req.setAttribute("allProduct", allProduct);
 		req.setAttribute("listCategory", listCategorys);
 		RequestDispatcher rd = req.getRequestDispatcher("/views/Trangchu.jsp");
 		rd.forward(req, resp);

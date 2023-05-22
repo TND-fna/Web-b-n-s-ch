@@ -212,6 +212,77 @@
 						<li id="item_typeOrder_cancel" class="item_typeOrder col-2-4"
 							onclick="changeToCancelForm()">Đã huỷ</li>
 					</ul>
+							<c:forEach items="${sessionScope.cart}" var="map">
+						<div
+								class="row mb-4 d-flex justify-content-between align-items-center mask">
+							<div class="col-md-2 col-lg-2 col-xl-2">
+								<img src="${map.value.product.image}"
+									 class="img-fluid rounded-3"
+									 alt="${map.value.product.productName}">
+							</div>
+							<div class="col-md-3 col-lg-3 col-xl-3">
+								<h6 class="text-muted">${map.value.product.productName}</h6>
+								<h6 class="text-black mb-0">
+									<fmt:formatNumber type="number" pattern="#,###"
+													  value="${map.value.product.price}"></fmt:formatNumber>
+									đ
+								</h6>
+							</div>
+							<div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+								<form action="cart-change" method="post">
+									<button class="btn btn-link px-2" type="submit"
+											onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+									</button>
+									<input type="hidden" name="pId"
+										   value="${map.value.product.id}" /> <input id="quantity"
+																					 min="0" name="quantity" value="${map.value.quantity}"
+																					 type="number" class="form-control form-control-sm" />
+
+									<button class="btn btn-link px-2" type="submit"
+											onclick="buy('${productDetail.id}') this.parentNode.querySelector('input[type=number]').stepUp()">
+									</button>
+								</form>
+
+								<!-- <button>
+														<a href="process?num=-1&id=${pd.product_id}">-</a>
+													</button>
+													<p>${pd.product_Amount}</p>
+													<button>
+														<a href="process?num=1&id=${pd.product_id}">+</a>
+													</button>
+												 -->
+
+							</div>
+							<div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+								<h6 class="mb-0">
+									<fmt:formatNumber type="number" pattern="#,###"
+													  value="${map.value.product.price * map.value.quantity}"></fmt:formatNumber>
+									đ
+								</h6>
+							</div>
+							<div class="col-md-1 col-lg-1 col-xl-1 text-end">
+								<a type="">
+									Chờ xác nhận
+								</a>
+
+<%--									&lt;%&ndash; <input type="hidden" name="id"--%>
+<%--                                        value="${map.value.product.product_id}" /> &ndash;%&gt;--%>
+<%--								<a type="submit"--%>
+<%--								   href="${pageContext.request.contextPath}/member/cart-remove?pId=${map.value.product.id}"--%>
+<%--								   class="text-muted"><i class="fas fa-times"></i>--%>
+<%--								</a>--%>
+							</div>
+
+							<!-- <form action="process" method="post">
+													<input type="hidden" name="id" value="${pd.product_id}" />
+													<input type="submit" value="X" />
+												</form>
+											 -->
+						</div>
+
+						<hr class="my-4">
+					</c:forEach>
+
 				</div>
 
 				<!-- All form -->

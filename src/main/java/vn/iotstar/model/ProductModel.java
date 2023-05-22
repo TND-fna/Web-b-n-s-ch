@@ -5,17 +5,17 @@ import java.sql.Date;
 public class ProductModel {
     private int id;
     private String productName, image, description;
-    private double price;
+    private int price;
     private int categoryID, discontinued, quantity;
-    private Date createAt, updateAt;
+    private String createAt, updateAt;
     private int id_discount, cover_id, storeID, id_NXB;
-    private Date expiration;
+    private String expiration;
     private int rating_count;
     private double average_rating;
 
-    public ProductModel(int id, String productName, String image, String description, double price, int categoryID,
-                        int discontinued, int quantity, Date createAt, Date updateAt, int id_discount, int cover_id, int storeID,
-                        int id_NXB, Date expiration, int rating_count, double average_rating) {
+    public ProductModel(int id, String productName, String image, String description, int price, int categoryID,
+                        int discontinued, int quantity, String createAt, String updateAt, int id_discount, int cover_id, int storeID,
+                        int id_NXB, String expiration, int rating_count, double average_rating) {
         this.id = id;
         this.productName = productName;
         this.image = image;
@@ -71,7 +71,7 @@ public class ProductModel {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -99,20 +99,29 @@ public class ProductModel {
         this.quantity = quantity;
     }
 
-    public Date getCreateAt() {
+
+    public String getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(Date createAt) {
+    public void setCreateAt(String createAt) {
         this.createAt = createAt;
     }
 
-    public Date getUpdateAt() {
+    public String getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
+    public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public String getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(String expiration) {
+        this.expiration = expiration;
     }
 
     public int getId_discount() {
@@ -147,13 +156,7 @@ public class ProductModel {
         this.id_NXB = id_NXB;
     }
 
-    public Date getExpiration() {
-        return expiration;
-    }
 
-    public void setExpiration(Date expiration) {
-        this.expiration = expiration;
-    }
 
     public int getRating_count() {
         return rating_count;

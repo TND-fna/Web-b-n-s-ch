@@ -18,18 +18,17 @@ public class CategoryDAO {
     public List<ProductModel> pagingCategory(String cgID, int index) {
         List<ProductModel> list = new ArrayList<>();
         
-        String query = "SELECT *\r\n"
-                + "FROM\r\n"
-                + "    PRODUCT WHERE categoryID = ?\r\n"
-                + "ORDER BY id \r\n"
-                + "OFFSET ? ROWS \r\n"
-                + "FETCH NEXT 10 ROWS ONLY;";
+        String query = "SELECT *" +
+                " FROM PRODUCT" +
+                " WHERE categoryID = ?" +
+                " ORDER BY id "+
+                " LIMIT 10";
         
         try {
             conn = new DBConnection().getConnection();      
             ps = conn.prepareStatement(query);      
             ps.setString(1, cgID);
-            ps.setInt(2, (index - 1) * 10);
+//            ps.setInt(2, (index - 1) * 10);
             rs = ps.executeQuery();
             
             while (rs.next()) {
@@ -38,17 +37,17 @@ public class CategoryDAO {
                         rs.getString(2), 
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getInt(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getDate(10),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11),
                         rs.getInt(12),
                         rs.getInt(13),
                         rs.getInt(14),
-                        rs.getDate(15),
+                        rs.getString(15),
                         rs.getInt(16),
                         rs.getDouble(17)));
             }
@@ -75,7 +74,7 @@ public class CategoryDAO {
     }
 
     public void deleteCategory(int id) {
-        String query = "DELETE FROM PRODUCT_CATEGORY WHERE category_id = ?";
+        String query = "DELETE FROM PRODUCT_CATEGORY WHERE categoryID = ?";
 
         try {
             conn = new DBConnection().getConnection();
@@ -88,7 +87,7 @@ public class CategoryDAO {
         }
     }
     public CategoryModel editCategory(CategoryModel cgModel) {
-        String query = "UPDATE PRODUCT_CATEGORY SET category_name = ? WHERE category_id = ?";
+        String query = "UPDATE PRODUCT_CATEGORY SET category_name = ? WHERE categoryID = ?";
 
         try {
             conn = new DBConnection().getConnection();
@@ -109,12 +108,12 @@ public class CategoryDAO {
     }
 
     public CategoryModel insertCategory(CategoryModel cgModel) {
-        String query = "INSERT INTO PRODUCT_CATEGORY(category_name) VALUES(?)";
+        String query = "INSERT INTO PRODUCT_CATEGORY() VALUES(?,?,?,?,?,?,?)";
 
         try {
             conn = new DBConnection().getConnection();
             ps = conn.prepareStatement(query);
-            ps.setString(1, cgModel.getCategory_name());
+//            ps.setString(1, cgModel.getCategory_name());
             ps.executeUpdate();
 
             while (rs.next()) {
@@ -166,17 +165,17 @@ public class CategoryDAO {
                         rs.getString(2), 
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getInt(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getDate(10),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11),
                         rs.getInt(12),
                         rs.getInt(13),
                         rs.getInt(14),
-                        rs.getDate(15),
+                        rs.getString(15),
                         rs.getInt(16),
                         rs.getDouble(17)));
             }
@@ -205,5 +204,9 @@ public class CategoryDAO {
             // TODO: handle exception
         }
         return null;
+    }
+    public static void main(String[] args){
+        CategoryDAO cate = new CategoryDAO();
+        System.out.println(cate.pagingCategory("1",1));
     }
 }

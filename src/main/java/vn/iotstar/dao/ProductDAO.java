@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import vn.iotstar.connection.DBConnection;
 import vn.iotstar.model.ProductModel;
 
@@ -17,18 +18,20 @@ public class ProductDAO {
 	public List<ProductModel> getNext5NewBook(int amount_newbook) {
         List<ProductModel> list = new ArrayList<>();
         
-        String query = "SELECT *\r\n"
-                + "FROM\r\n"
-                + "    PRODUCT\r\n"
-                + "ORDER BY id \r\n"
-                + "OFFSET ? ROWS \r\n"
-                + "FETCH NEXT 5 ROWS ONLY;";
+//        String query = "SELECT *\r\n"
+//                + "FROM\r\n"
+//                + "    PRODUCT\r\n"
+//                + "ORDER BY id \r\n"
+//                + "OFFSET ? ROWS \r\n"
+//                + "FETCH NEXT 5 ROWS ONLY;";
+		String query = "SELECT * FROM PRODUCT";
         
         try {
             conn = new DBConnection().getConnection();      
             ps = conn.prepareStatement(query);      
-            ps.setInt(1, amount_newbook);
+//            ps.setInt(1, amount_newbook);
             rs = ps.executeQuery();
+			System.out.println("abc");
             
             while (rs.next()) {
                 list.add(new ProductModel(
@@ -36,17 +39,17 @@ public class ProductDAO {
                         rs.getString(2), 
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getInt(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getDate(10),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11),
                         rs.getInt(12),
                         rs.getInt(13),
                         rs.getInt(14),
-                        rs.getDate(15),
+                        rs.getString(15),
                         rs.getInt(16),
                         rs.getDouble(17)));
             }
@@ -75,17 +78,17 @@ public class ProductDAO {
                         rs.getString(2), 
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getInt(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getDate(10),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11),
                         rs.getInt(12),
                         rs.getInt(13),
                         rs.getInt(14),
-                        rs.getDate(15),
+                        rs.getString(15),
                         rs.getInt(16),
                         rs.getDouble(17)));
 			}
@@ -111,17 +114,17 @@ public class ProductDAO {
                         rs.getString(2), 
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getInt(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getDate(10),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11),
                         rs.getInt(12),
                         rs.getInt(13),
                         rs.getInt(14),
-                        rs.getDate(15),
+                        rs.getString(15),
                         rs.getInt(16),
                         rs.getDouble(17)));
 			}
@@ -148,17 +151,17 @@ public class ProductDAO {
                         rs.getString(2), 
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getInt(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getDate(10),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11),
                         rs.getInt(12),
                         rs.getInt(13),
                         rs.getInt(14),
-                        rs.getDate(15),
+                        rs.getString(15),
                         rs.getInt(16),
                         rs.getDouble(17)));
 			}
@@ -168,7 +171,7 @@ public class ProductDAO {
 		}
 		return null;
 	}
-	public ProductModel getProductById(String pro_id) {	
+	public ProductModel getProductById(String pro_id) {
 		String query = "SELECT * FROM PRODUCT WHERE id = ?";
 		
 		try {
@@ -183,17 +186,17 @@ public class ProductDAO {
                         rs.getString(2), 
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getInt(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getDate(10),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11),
                         rs.getInt(12),
                         rs.getInt(13),
                         rs.getInt(14),
-                        rs.getDate(15),
+                        rs.getString(15),
                         rs.getInt(16),
                         rs.getDouble(17)));
 			}
@@ -220,17 +223,17 @@ public class ProductDAO {
                         rs.getString(2), 
                         rs.getString(3),
                         rs.getString(4),
-                        rs.getDouble(5),
+                        rs.getInt(5),
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getDate(9),
-                        rs.getDate(10),
+                        rs.getString(9),
+                        rs.getString(10),
                         rs.getInt(11),
                         rs.getInt(12),
                         rs.getInt(13),
                         rs.getInt(14),
-                        rs.getDate(15),
+                        rs.getString(15),
                         rs.getInt(16),
                         rs.getDouble(17)));
 			}
@@ -239,5 +242,9 @@ public class ProductDAO {
 			// TODO: handle exception
 		}
 		return null;
+	}
+	public static void main(String[] args){
+		ProductDAO pro = new ProductDAO();
+		System.out.println(pro.getProductById("2"));
 	}
 }

@@ -163,7 +163,7 @@
 										<c:if test="${sessionScope.cart.size() == 0}">
 											<a href="showCart"
 												class="btn btn-dark btn-block btn-lg"
-												data-mdb-ripple-color="dark">Thanh toán</a>
+												data-mdb-ripple-color="dark">Đặt hàng</a>
 										</c:if>
 
 									</div>
